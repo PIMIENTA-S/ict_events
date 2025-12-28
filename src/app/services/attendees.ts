@@ -5,7 +5,7 @@ import {
   collectionData,
   doc,
   updateDoc,
-  serverTimestamp
+  serverTimestamp,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -25,22 +25,26 @@ export class AttendeesService {
   private attendeesRef;
 
   constructor(private firestore: Firestore) {
+    // ⚠️ Se deja EXACTAMENTE como tú lo tienes
     this.attendeesRef = collection(this.firestore, 'attendess');
   }
 
-  //Escucha asistentes en tiempo real
+  // 🔥 Tiempo real
   getAttendees(): Observable<Attendee[]> {
     return collectionData(this.attendeesRef, {
       idField: 'id',
     }) as Observable<Attendee[]>;
   }
 
-  // Marcar asistencia
-  checkIn(attendeeId: string) {
-    const attendeeDoc = doc(this.firestore, `attendess/${attendeeId}`);
+  // 🔁 Marcar / desmarcar asistencia
+  toggleCheckIn(attendee: Attendee) {
+    if (!attendee.id) return;
+
+    const attendeeDoc = doc(this.firestore, `attendess/${attendee.id}`);
+
     return updateDoc(attendeeDoc, {
-      checkedIn: true,
-      checkedInAt: serverTimestamp(),
+      checkedIn: !attendee.checkedIn,
+      checkedInAt: !attendee.checkedIn ? serverTimestamp() : null,
     });
   }
 }

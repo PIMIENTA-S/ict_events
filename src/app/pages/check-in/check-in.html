@@ -17,15 +17,25 @@
   
     <!-- Attendees list -->
     <section class="list">
-        <div class="card" *ngFor="let attendee of attendees$ | async">
-          <div class="info">
-            <strong>{{ attendee.name }}</strong>
-            <span>{{ attendee.document }}</span>
-          </div>
-      
-          <button class="check-btn" [disabled]="attendee.checkedIn">
-            {{ attendee.checkedIn ? '✔ Registrado' : '✔ Marcar' }}
-          </button>
+
+      <div
+        class="card"
+        *ngFor="let attendee of attendees$ | async"
+      >
+        <div class="info">
+          <strong>{{ attendee.name }}</strong>
+          <span>{{ attendee.document }}</span>
         </div>
-      </section>      
+    
+        <button
+          class="check-btn"
+          [class.checked]="attendee.checkedIn"
+          (click)="toggleAttendance(attendee)"
+        >
+          {{ attendee.checkedIn ? '✔ Registrado' : '✔ Marcar' }}
+        </button>
+      </div>
+    
+    </section>
+      
 </div>

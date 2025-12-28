@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AttendeesService } from '../../services/attendees';
+import { Attendee, AttendeesService } from '../../services/attendees';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -17,4 +17,9 @@ export class CheckIn{
   constructor(private attendeesService: AttendeesService) {
     this.attendees$ = this.attendeesService.getAttendees();
   }
+
+    // Marcar / desmarcar asistencia
+    toggleAttendance(attendee: Attendee) {
+      this.attendeesService.toggleCheckIn(attendee);
+    }
 }
