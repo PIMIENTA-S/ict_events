@@ -6,6 +6,7 @@ import {
   doc,
   updateDoc,
   serverTimestamp,
+  addDoc
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -25,18 +26,17 @@ export class AttendeesService {
   private attendeesRef;
 
   constructor(private firestore: Firestore) {
-    // ⚠️ Se deja EXACTAMENTE como tú lo tienes
     this.attendeesRef = collection(this.firestore, 'attendess');
   }
 
-  // 🔥 Tiempo real
+  // Tiempo real
   getAttendees(): Observable<Attendee[]> {
     return collectionData(this.attendeesRef, {
       idField: 'id',
     }) as Observable<Attendee[]>;
   }
 
-  // 🔁 Marcar / desmarcar asistencia
+  // sirve para marcar o desmarcar asistencia
   toggleCheckIn(attendee: Attendee) {
     if (!attendee.id) return;
 
@@ -47,4 +47,19 @@ export class AttendeesService {
       checkedInAt: !attendee.checkedIn ? serverTimestamp() : null,
     });
   }
+
+  // Crear nuevo asistente
+  addAttendee(attendee: {
+    name: string;
+    document: string;
+    phone?: string;
+  }) {
+    return addDoc(this.attendeesRef, {
+      ...attendee,
+      checkedIn: false,
+      checkedInAt: null,
+    });
+  }
+  
+
 }
