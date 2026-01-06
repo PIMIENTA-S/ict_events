@@ -4,7 +4,7 @@
     margin: 0 auto;
     padding: 1.5rem;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #f9fafb;
+    /* background-color: #f9fafb; */
     min-height: 100vh;
 }
 
@@ -93,4 +93,3 @@
 .check-btn:hover {
     background-color: #1e40af;
 }
-  

@@ -1,49 +1,51 @@
+<header class="header">
+  <img src="/src/assets/logo.png" alt="ICT Logo" class="logo" />
+  <h1>Registro de Asistencia</h1>
+</header>
+
 <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <img src="" alt="ICT Logo" class="logo" />
-      <h1>Registro de Asistencia</h1>
-    </header>
-  
     <!-- Search -->
     <section class="search">
       <label for="search">Buscar por documento</label>
       <input
         id="search"
         type="text"
-        placeholder="Ej: 1067591182"
+        placeholder="Ej: 10675182"
+        [(ngModel)]="search"
+        (input)="filterAttendees()"
       />
     </section>
 
     <section class="add-form">
-      <input
-        type="text"
-        placeholder="Nombre completo"
-        [(ngModel)]="newAttendee.name"
-      />
-    
-      <input
-        type="text"
-        placeholder="Documento"
-        [(ngModel)]="newAttendee.document"
-      />
-    
-      <input
-        type="text"
-        placeholder="Teléfono (opcional)"
-        [(ngModel)]="newAttendee.phone"
-      />
-    
-      <button (click)="addAttendee()">➕ Agregar</button>
+      <div *ngIf="showAddForm" class="add-form">
+        <p>No existe. Registrar nuevo asistente</p>
+      
+        <input
+          type="text"
+          placeholder="Nombre"
+          [(ngModel)]="newAttendee.name"
+        />
+      
+        <input
+          type="text"
+          placeholder="Documento"
+          [(ngModel)]="newAttendee.document"
+        />
+      
+        <input
+          type="text"
+          placeholder="Teléfono"
+          [(ngModel)]="newAttendee.phone"
+        />
+      
+        <button (click)="addAttendee()">Registrar</button>
+      </div>
+      
     </section>
   
     <!-- Attendees list -->
-    <section class="list">
-
-      <div
-        class="card"
-        *ngFor="let attendee of attendees$ | async"
-      >
+    <section class="list" *ngIf="filteredAttendees.length > 0">
+      <div class="card" *ngFor="let attendee of filteredAttendees">
         <div class="info">
           <strong>{{ attendee.name }}</strong>
           <span>{{ attendee.document }}</span>
@@ -54,10 +56,8 @@
           [class.checked]="attendee.checkedIn"
           (click)="toggleAttendance(attendee)"
         >
-          {{ attendee.checkedIn ? '✔ Registrado' : '✔ Marcar' }}
+          {{ attendee.checkedIn ? '↩ Desmarcar' : '✔ Marcar' }}
         </button>
       </div>
-    
     </section>
-      
 </div>
