@@ -1,63 +1,64 @@
 <header class="header">
-  <img src="/src/assets/logo.png" alt="ICT Logo" class="logo" />
+  <img src="src\assets\logo.png" alt="ICT Logo" class="logo" />
   <h1>Registro de Asistencia</h1>
 </header>
 
 <div class="container">
-    <!-- Search -->
-    <section class="search">
-      <label for="search">Buscar por documento</label>
-      <input
-        id="search"
-        type="text"
-        placeholder="Ej: 10675182"
-        [(ngModel)]="search"
-        (input)="filterAttendees()"
+  <!-- Search -->
+  <section class="search">
+    <label for="search">Buscar por documento</label>
+    <input
+      id="search"
+      type="text"
+      placeholder="Ej: 10675182"
+      [(ngModel)]="search"
+      (input)="filterAttendees()"
       />
     </section>
 
     <section class="add-form">
-      <div *ngIf="showAddForm" class="add-form">
-        <p>No existe. Registrar nuevo asistente</p>
-      
-        <input
-          type="text"
-          placeholder="Nombre"
-          [(ngModel)]="newAttendee.name"
-        />
-      
-        <input
-          type="text"
-          placeholder="Documento"
-          [(ngModel)]="newAttendee.document"
-        />
-      
-        <input
-          type="text"
-          placeholder="Teléfono"
-          [(ngModel)]="newAttendee.phone"
-        />
-      
-        <button (click)="addAttendee()">Registrar</button>
-      </div>
-      
-    </section>
-  
-    <!-- Attendees list -->
-    <section class="list" *ngIf="filteredAttendees.length > 0">
-      <div class="card" *ngFor="let attendee of filteredAttendees">
-        <div class="info">
-          <strong>{{ attendee.name }}</strong>
-          <span>{{ attendee.document }}</span>
+      @if (showAddForm) {
+        <div class="add-form">
+          <p>No se encontraron resultados</p>
+          <input
+            type="text"
+            placeholder="Nombre"
+            [(ngModel)]="newAttendee.name"
+            />
+            <input
+              type="text"
+              placeholder="Documento"
+              [(ngModel)]="newAttendee.document"
+              />
+              <input
+                type="text"
+                placeholder="Teléfono"
+                [(ngModel)]="newAttendee.phone"
+                />
+                <button (click)="addAttendee()">Registrar</button>
+              </div>
+            }
+
+          </section>
+
+          <!-- Attendees list -->
+          @if (filteredAttendees.length > 0) {
+            <section class="list">
+              @for (attendee of filteredAttendees; track attendee) {
+                <div class="card">
+                  <div class="info">
+                    <strong>{{ attendee.name }}</strong>
+                    <span>{{ attendee.document }}</span>
+                  </div>
+                  <button
+                    class="check-btn"
+                    [class.checked]="attendee.checkedIn"
+                    (click)="toggleAttendance(attendee)"
+                    >
+                    {{ attendee.checkedIn ? '↩ Desmarcar' : '✔ Marcar' }}
+                  </button>
+                </div>
+              }
+            </section>
+          }
         </div>
-    
-        <button
-          class="check-btn"
-          [class.checked]="attendee.checkedIn"
-          (click)="toggleAttendance(attendee)"
-        >
-          {{ attendee.checkedIn ? '↩ Desmarcar' : '✔ Marcar' }}
-        </button>
-      </div>
-    </section>
-</div>
